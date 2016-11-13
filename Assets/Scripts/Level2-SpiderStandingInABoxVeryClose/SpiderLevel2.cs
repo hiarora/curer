@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.IO;
 
-public class SpiderWalker : MonoBehaviour
+public class SpiderLevel2 : MonoBehaviour
 {
-    Vector3 originalPosition;
+    /*Vector3 originalPosition;
 	Rigidbody rigidbody = null;
 	public Camera main;
     // Use this for initialization
@@ -23,12 +23,6 @@ public class SpiderWalker : MonoBehaviour
         }
     }
 
-    // Called by GazeGestureManager when the user performs a Select gesture
-    void OnSelect()
-    {
-       
-    }
-
     // Called by SpeechManager when the user says the "Reset world" command
     void OnReset()
     {
@@ -42,15 +36,8 @@ public class SpiderWalker : MonoBehaviour
         // Put the sphere back into its original local position.
         this.transform.localPosition = originalPosition;
     }
-
-    // Called by SpeechManager when the user says the "Drop sphere" command
-    void OnDrop()
-    {
-        // Just do the same logic as a Select gesture.
-        OnSelect();
-    }
 	
 	void Update() {
 		//rigidbody.velocity = main.gameObject.transform.position
-	}
+	}*/
 }

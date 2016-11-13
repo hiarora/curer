@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.IO;
 
-public class SpiderWalker : MonoBehaviour
+public class Spider : MonoBehaviour
 {
-    Vector3 originalPosition;
+   /* Vector3 originalPosition;
 	Rigidbody rigidbody = null;
 	public Camera main;
     // Use this for initialization
@@ -52,5 +52,5 @@ public class SpiderWalker : MonoBehaviour
 	
 	void Update() {
 		//rigidbody.velocity = main.gameObject.transform.position
-	}
+	}*/
 }
