@@ -9,13 +9,7 @@ public class CubeTransparent : MonoBehaviour {
 	void Start () {
 		//this.gameObject.addComponent("Renderer").material = new Material(Shader.Find("Transparent/Diffuse"));
 		Renderer r = this.gameObject.GetComponent<MeshRenderer>();
-		Debug.Log(Shader.Find("Transparent/Diffuse"));
-		r.material = new Material(Shader.Find("Transparent/Diffuse"));
-        r.material.color = new Color(1, 1, 1, 0.4f);
+		r.material.color = new Color(1, 1, 1, 0.4f);
+		Debug.Log(r.material.color);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
