@@ -54,6 +54,7 @@
      <Compile Include="Assets\Holograms\Support\Underworld\UnderworldSound.cs" />
      <Compile Include="Assets\Scripts\GazeGestureManager.cs" />
      <Compile Include="Assets\Scripts\Level1-SpiderStandingIdleAtDistance\Spider.cs" />
+     <Compile Include="Assets\Scripts\Level2-SpiderStandingInABoxVeryClose\CubeTransparent.cs" />
      <Compile Include="Assets\Scripts\Level2-SpiderStandingInABoxVeryClose\SpiderLevel2.cs" />
      <Compile Include="Assets\Scripts\SpeechManager.cs" />
      <Compile Include="Assets\Scripts\SphereCommands.cs" />
