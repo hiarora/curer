@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4783ec5fd533a5a468521bc4ede48e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main: {fileID: 0}
 --- !u!1001 &347481436
 Prefab:
   m_ObjectHideFlags: 0
@@ -330,7 +331,7 @@ Prefab:
     - target: {fileID: 9500000, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: c0fef3d153837de4ab459749ac4ab54f, type: 2}
+      objectReference: {fileID: 9100000, guid: 691f4daabf670194388d3469fd48fa1e, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f5a9bd478ca094495a4520e37f57420d, type: 3}
   m_IsPrefabParent: 0
