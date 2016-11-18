@@ -21,7 +21,7 @@ public class SpatialMapping : MonoBehaviour {
     private int physicsLayer = 31;
 
     // Handles rendering of spatial mapping meshes.
-    private SpatialMappingRenderer spatialMappingRenderer;
+    /*private SpatialMappingRenderer spatialMappingRenderer;
 
     // Creates/updates environment colliders to work with physics.
     private SpatialMappingCollider spatialMappingCollider;
@@ -85,5 +85,5 @@ public class SpatialMapping : MonoBehaviour {
         PhysicsRaycastMask = 1 << physicsLayer;
         DrawVisualMeshes = drawVisualMeshes;
         MappingEnabled = mappingEnabled;
-    }
+    }*/
 }

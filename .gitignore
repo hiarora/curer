@@ -5,3 +5,5 @@ obj
 *.csproj
 UWP
 Library
+*.lock
+Temp
