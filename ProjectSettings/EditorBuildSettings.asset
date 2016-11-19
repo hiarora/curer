@@ -5,13 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level1-SpiderStandingIdleAtDistance.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level2-SpiderStandingInABoxVeryClose.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SpiderWalkingTowardsCamera.unity
   - enabled: 0
     path: Assets/Scenes/Level4-SpiderWalkingTowardsCamera.unity
+  - enabled: 0
+    path: Assets/Scenes/Level5-VuforiaScene.unity
+  - enabled: 1
+    path: Assets/Scenes/Vuforia-2-Hololens.unity
