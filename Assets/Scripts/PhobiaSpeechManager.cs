@@ -32,12 +32,77 @@ public class PhobiaSpeechManager : MonoBehaviour
 			//loadingImage.SetActive(true);
 			Application.LoadLevel(4);
         });
+		keywords.Add("Five", () =>
+        {
+			//loadingImage.SetActive(true);
+			Application.LoadLevel(5);
+        });
 		keywords.Add("Menu", () =>
         {
 			//loadingImage.SetActive(true);
 			Application.LoadLevel(0);
         });
-        
+        keywords.Add("Up", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().OpacityUp();
+            }
+        });
+        keywords.Add("Down", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().OpacityDown();
+            }
+        });
+        keywords.Add("Appear", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().Appear();
+            }
+        });
+        keywords.Add("Disappear", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().Disappear();
+            }
+        });
+        keywords.Add("Stop", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().Stop();
+            }
+        });
+        keywords.Add("Move", () =>
+        {
+            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject go = (GameObject)o;
+                if (go.name == "spider")
+                    go.GetComponent<OpaqueSpiderWalker>().Move();
+            }
+        });
+
 
         // Tell the KeywordRecognizer about our keywords.
         keywordRecognizer = new KeywordRecognizer(keywords.Keys.ToArray());
