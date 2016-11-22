@@ -19,8 +19,8 @@ public class PhobiaSpeechManager : MonoBehaviour
         });
 		keywords.Add("Two", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(2);
+            //loadingImage.SetActive(true);
+            Application.LoadLevel(2);    
         });
 		keywords.Add("Three", () =>
         {

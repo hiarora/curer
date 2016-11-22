@@ -26,7 +26,7 @@ public class OpaqueSpiderWalker : MonoBehaviour
         rigidbody.useGravity = false;
         Vector3 v3 = main.gameObject.transform.position - originalPosition;
         v3.Normalize();
-        rigidbody.AddForce(v3 * 40);
+        rigidbody.AddForce(v3 * 20);
     }
 
 	void Update() {
@@ -45,7 +45,7 @@ public class OpaqueSpiderWalker : MonoBehaviour
             rigidbody.angularVelocity = Vector3.zero;
             Vector3 v3 = main.gameObject.transform.position - originalPosition;
             v3.Normalize();
-            rigidbody.AddForce(v3 * 40);
+            rigidbody.AddForce(v3 * 20);
             previousCameraPosition = main.gameObject.transform.position;
         }
 
