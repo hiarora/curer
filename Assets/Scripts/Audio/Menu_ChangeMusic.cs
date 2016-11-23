@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Menu_ChangeMusic : MonoBehaviour {
-	public AudioClip level1Music;
+	public AudioClip walkingMusic;
 	private AudioSource source;
 	
 	void Awake () {
@@ -10,8 +10,8 @@ public class Menu_ChangeMusic : MonoBehaviour {
 	}
 	
 	void OnLevelWasLoaded(int level) {
-		if(level == 1) {
-			source.clip = level1Music;
+		if(level == 3 || level == 4) {
+			source.clip = walkingMusic;
 			source.Play();
 		}
 	}

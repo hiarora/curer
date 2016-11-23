@@ -749,7 +749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 459d9e6670c6f2b44997b07ddbe08db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level1Music: {fileID: 8300000, guid: cbc5f8db78b0f93429d6a28bbd989232, type: 3}
+  walkingMusic: {fileID: 8300000, guid: cbc5f8db78b0f93429d6a28bbd989232, type: 3}
 --- !u!114 &1282278293
 MonoBehaviour:
   m_ObjectHideFlags: 0
