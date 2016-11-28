@@ -26,9 +26,6 @@ struct appdata_t
         float2 texcoord : TEXCOORD0;
     #endif
     float3 normal : NORMAL;
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint instId : SV_InstanceID;
-    #endif
 };
 
 struct v2f_surf
@@ -42,11 +39,11 @@ struct v2f_surf
     #else
         float3 vlight : TEXCOORD1;
     #endif
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint renderTargetIndex: SV_RenderTargetArrayIndex;
-    #endif
     LIGHTING_COORDS(2, 3)
     UNITY_FOG_COORDS(4)
+    #if _NEAR_PLANE_FADE_ON
+        float fade : TEXCOORD5;
+    #endif
 };
 
 inline float3 LightingLambertVS(float3 normal, float3 lightDir)
@@ -60,12 +57,7 @@ v2f_surf vert(appdata_t v)
     v2f_surf o;
     UNITY_INITIALIZE_OUTPUT(v2f_surf, o);
 
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        o.pos = mul(UNITY_MATRIX_MVP_STEREO[v.instId], v.vertex);
-        o.renderTargetIndex = v.instId;
-    #else
-        o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-    #endif
+    o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 
     #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON
         o.pack0.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
@@ -78,6 +70,10 @@ v2f_surf vert(appdata_t v)
         o.vlight = ShadeSH9(float4(worldN, 1.0));
         o.vlight += LightingLambertVS(worldN, _WorldSpaceLightPos0.xyz);
     #endif
+    
+    #if _NEAR_PLANE_FADE_ON
+        o.fade = ComputeNearPlaneFadeLinear(v.vertex);
+    #endif
 
     TRANSFER_VERTEX_TO_FRAGMENT(o);
     UNITY_TRANSFER_FOG(o, o.pos);
@@ -86,9 +82,9 @@ v2f_surf vert(appdata_t v)
 
 float4 frag(v2f_surf IN) : SV_Target
 {
-    #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON	
+    #if _USEMAINTEX_ON || _USEEMISSIONTEX_ON
         float2 uv_MainTex = IN.pack0.xy;
-    #endif				
+    #endif
 
     float4 surfaceColor;
     #if _USEMAINTEX_ON
@@ -119,6 +115,10 @@ float4 frag(v2f_surf IN) : SV_Target
 
     #ifdef _USEEMISSIONTEX_ON
         finalColor.rgb += UNITY_SAMPLE_TEX2D(_EmissionTex, uv_MainTex);
+    #endif
+
+    #if _NEAR_PLANE_FADE_ON
+        finalColor.rgb *= IN.fade;
     #endif
 
     UNITY_APPLY_FOG(IN.fogCoord, finalColor);

@@ -1,61 +1,65 @@
-﻿using HoloToolkit;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
-/// <summary>
-/// CursorManager class takes Cursor GameObjects.
-/// One that is on Holograms and another off Holograms.
-/// Shows the appropriate Cursor when a Hologram is hit.
-/// Places the appropriate Cursor at the hit position.
-/// Matches the Cursor normal to the hit surface.
-/// </summary>
-public class CursorManager : Singleton<CursorManager>
+namespace HoloToolkit.Unity
 {
-    [Tooltip("Drag the Cursor object to show when it hits a hologram.")]
-    public GameObject CursorOnHolograms;
-
-    [Tooltip("Drag the Cursor object to show when it does not hit a hologram.")]
-    public GameObject CursorOffHolograms;
-
-    void Awake()
+    /// <summary>
+    /// CursorManager class uses two GameObjects to render the Cursor.
+    /// One is used when on Holograms and the other when off Holograms.
+    /// 1. Shows the appropriate Cursor when a Hologram is hit.
+    /// 2. Places the appropriate Cursor at the hit position.
+    /// 3. Matches the Cursor normal to the hit surface.
+    /// </summary>
+    public partial class CursorManager : Singleton<CursorManager>
     {
-        if (CursorOnHolograms == null || CursorOffHolograms == null)
+        [Tooltip("Drag the Cursor object to show when it hits a hologram.")]
+        public GameObject CursorOnHolograms;
+
+        [Tooltip("Drag the Cursor object to show when it does not hit a hologram.")]
+        public GameObject CursorOffHolograms;
+
+        [Tooltip("Distance, in meters, to offset the cursor from the collision point.")]
+        public float DistanceFromCollision = 0.01f;
+
+        private void Awake()
         {
-            return;
+            // Hide the Cursors to begin with.
+            if (CursorOnHolograms != null)
+            {
+                CursorOnHolograms.SetActive(false);
+            }
+            if (CursorOffHolograms != null)
+            {
+                CursorOffHolograms.SetActive(false);
+            }
+
+            // Make sure there is a GazeManager in the scene
+            if (GazeManager.Instance == null)
+            {
+                Debug.LogWarning("CursorManager requires a GazeManager in your scene.");
+                enabled = false;
+            }
         }
 
-        // Hide the Cursors to begin with.
-        CursorOnHolograms.SetActive(false);
-        CursorOffHolograms.SetActive(false);
-    }
-
-    void Update()
-    {
-        /* TODO: DEVELOPER CODING EXERCISE 2.b */
-
-        if (GazeManager.Instance == null || CursorOnHolograms == null || CursorOffHolograms == null)
+        private void LateUpdate()
         {
-            return;
-        }
+            // Enable/Disable the cursor based whether gaze hit a hologram
+            if (CursorOnHolograms != null)
+            {
+                CursorOnHolograms.SetActive(GazeManager.Instance.Hit);
+            }
+            if (CursorOffHolograms != null)
+            {
+                CursorOffHolograms.SetActive(!GazeManager.Instance.Hit);
+            }
 
-        if (GazeManager.Instance.Hit)
-        {
-            // 2.b: SetActive true the CursorOnHolograms to show cursor.
-            CursorOnHolograms.SetActive(true);
-            // 2.b: SetActive false the CursorOffHolograms hide cursor.
-            CursorOffHolograms.SetActive(false);
-        }
-        else
-        {
-            // 2.b: SetActive true CursorOffHolograms to show cursor.
-            CursorOffHolograms.SetActive(true);
-            // 2.b: SetActive false CursorOnHolograms to hide cursor.
-            CursorOnHolograms.SetActive(false);
-        }
+            // Place the cursor at the calculated position.
+            gameObject.transform.position = GazeManager.Instance.Position + GazeManager.Instance.Normal * DistanceFromCollision;
 
-        // 2.b: Assign gameObject's transform position equals GazeManager's instance Position.
-        gameObject.transform.position = GazeManager.Instance.Position;
-
-        // 2.b: Assign gameObject's transform up vector equals GazeManager's instance Normal.
-        gameObject.transform.up = GazeManager.Instance.Normal;
+            // Orient the cursor to match the surface being gazed at.
+            gameObject.transform.up = GazeManager.Instance.Normal;
+        }
     }
 }

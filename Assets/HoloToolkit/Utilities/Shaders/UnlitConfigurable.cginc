@@ -15,9 +15,6 @@ struct appdata_t
     #if _USEMAINTEX_ON
         float2 texcoord : TEXCOORD0;
     #endif
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint instId : SV_InstanceID;
-    #endif				
 };
 
 struct v2f
@@ -26,24 +23,23 @@ struct v2f
     #if _USEMAINTEX_ON
         float2 texcoord : TEXCOORD0;
     #endif
-        UNITY_FOG_COORDS(1)
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        uint renderTargetIndex: SV_RenderTargetArrayIndex;
+    UNITY_FOG_COORDS(1)
+    #if _NEAR_PLANE_FADE_ON
+        float fade : TEXCOORD2;
     #endif
 };
 
 v2f vert(appdata_t v)
 {
     v2f o;
-    #if defined (SHADER_API_D3D11) && defined (VRINSTANCINGEXT_ON)
-        o.vertex = mul(UNITY_MATRIX_MVP_STEREO[v.instId], v.vertex);
-        o.renderTargetIndex = v.instId;
-    #else
-        o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-    #endif
+    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 
     #if _USEMAINTEX_ON
         o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+    #endif
+    
+    #if _NEAR_PLANE_FADE_ON
+        o.fade = ComputeNearPlaneFadeLinear(v.vertex);
     #endif
 
     UNITY_TRANSFER_FOG(o, o.vertex);
@@ -63,7 +59,12 @@ float4 frag(v2f i) : SV_Target
     #if _USECOLOR_ON
         c *= _Color;
     #endif
-
+        
     UNITY_APPLY_FOG(i.fogCoord, c);
+
+    #if _NEAR_PLANE_FADE_ON
+        c.rgb *= i.fade;
+    #endif
+
     return c;
 }

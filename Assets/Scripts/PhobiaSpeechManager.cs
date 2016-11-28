@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
 using System.Net;
 using System.IO;
+using HoloToolkit.Unity;
 
 public class PhobiaSpeechManager : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class PhobiaSpeechManager : MonoBehaviour
 	}
 	
 	IEnumerator ValidateTokenForLogIn(System.Action<string> callBack, string token) {
+		Debug.Log("http://ec2-54-183-221-129.us-west-1.compute.amazonaws.com/phobiacurer/validateToken.php?token=" + token);
 		WWW w = new WWW("http://ec2-54-183-221-129.us-west-1.compute.amazonaws.com/phobiacurer/validateToken.php?token=" + token);
 		yield return w;
 		callBack(w.text);
@@ -75,6 +77,22 @@ public class PhobiaSpeechManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		TextToSpeechManager tts = null;
+		tts = this.GetComponent<TextToSpeechManager>();
+				
+		if (tts != null)
+		{
+			
+			Debug.Log("Haathi ka bachcha");
+			// Get the name
+			var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.Voice);
+
+			// Create message
+			var msg = string.Format("This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.", voiceName);
+
+			// Speak message
+			tts.SpeakText(msg);
+		}
 		keywords.Add("Token", () =>
         {
 			//loadingImage.SetActive(true);
