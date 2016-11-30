@@ -215,7 +215,7 @@ namespace HoloToolkit.Unity
             Debug.LogFormat("Speech not supported in editor. \"{0}\"", text);
         }
 
-        #if WINDOWS_UWP
+#if WINDOWS_UWP
         /// <summary>
         /// Executes a function that generates a speech stream and then converts and plays it in Unity.
         /// </summary>
@@ -309,6 +309,7 @@ namespace HoloToolkit.Unity
                 }
                 catch (Exception ex)
                 {
+                    Debug.Log("pt2");
                     Debug.LogErrorFormat("Speech generation problem: \"{0}\"", ex.Message);
                 }
             }
@@ -317,7 +318,7 @@ namespace HoloToolkit.Unity
                 Debug.LogErrorFormat("Speech not initialized. \"{0}\"", text);
             }
         }
-        #endif
+#endif
 
         // MonoBehaviour Methods
         void Start()
@@ -331,7 +332,7 @@ namespace HoloToolkit.Unity
                 else
                 { 
                     #if WINDOWS_UWP
-                    synthesizer = new SpeechSynthesizer();
+                    synthesizer = new SpeechSynthesizer();           
                     #endif
                 }
             }

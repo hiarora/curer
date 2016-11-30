@@ -12,7 +12,9 @@ using HoloToolkit.Unity;
 public class PhobiaSpeechManager : MonoBehaviour
 {
 	private string token;
-     public class CoroutineWithData {
+    private int currLevel = 0;
+    private bool levelOn = false;
+    public class CoroutineWithData {
      public Coroutine coroutine { get; private set; }
      public object result;
      private IEnumerator target;
@@ -20,7 +22,7 @@ public class PhobiaSpeechManager : MonoBehaviour
          this.target = target;
          this.coroutine = owner.StartCoroutine(Run());
      }
- 
+    
      private IEnumerator Run() {
          while(target.MoveNext()) {
              result = target.Current;
@@ -28,7 +30,7 @@ public class PhobiaSpeechManager : MonoBehaviour
          }
      }
 	}
- 
+   
  	IEnumerator GetToken(System.Action<string> callBack) {
 		WWW w = new WWW("http://ec2-54-183-221-129.us-west-1.compute.amazonaws.com/phobiacurer/getRandomToken.php");
 		yield return w;
@@ -69,7 +71,7 @@ public class PhobiaSpeechManager : MonoBehaviour
 			}
 		}, this.token));
 	}
-	
+
 	KeywordRecognizer keywordRecognizer = null;
 	public GameObject loadingImage;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
@@ -77,26 +79,12 @@ public class PhobiaSpeechManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-		TextToSpeechManager tts = null;
-		tts = this.GetComponent<TextToSpeechManager>();
-				
-		if (tts != null)
-		{
-			
-			Debug.Log("Haathi ka bachcha");
-			// Get the name
-			var voiceName = Enum.GetName(typeof(TextToSpeechVoice), tts.Voice);
-
-			// Create message
-			var msg = string.Format("This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.", voiceName);
-
-			// Speak message
-			tts.SpeakText(msg);
-		}
-		keywords.Add("Token", () =>
+        TextToSpeechManager tts = null;
+        tts = this.GetComponent<TextToSpeechManager>();
+        keywords.Add("Token", () =>
         {
-			//loadingImage.SetActive(true);
-			FetchToken();
+            //loadingImage.SetActive(true);
+            FetchToken();
         });
 		
 		keywords.Add("Start", () =>
@@ -104,95 +92,188 @@ public class PhobiaSpeechManager : MonoBehaviour
 			//loadingImage.SetActive(true);
 			ValidateToken();
         });
-		
-		keywords.Add("One", () =>
+		keywords.Add("Level One", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(1);
+            if (currLevel == 0)
+            {
+                currLevel = 1;
+                levelOn = true;
+                Application.LoadLevel(2);
+            }
         });
-		keywords.Add("Two", () =>
+		keywords.Add("Level Two", () =>
         {
-            //loadingImage.SetActive(true);
-            Application.LoadLevel(2);    
+            if (currLevel == 0)
+            {
+                currLevel = 2;
+                levelOn = true;
+                Application.LoadLevel(3);
+            }
         });
-		keywords.Add("Three", () =>
+		keywords.Add("Level Three", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(3);
+            if (currLevel == 0)
+            {
+                currLevel = 3;
+                levelOn = true;
+                Application.LoadLevel(4);
+            }
         });
-		keywords.Add("Four", () =>
+		keywords.Add("Level Four", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(4);
+            if (currLevel == 0)
+            {
+                currLevel = 4;
+                levelOn = true;
+                Application.LoadLevel(5);
+            }
         });
-		keywords.Add("Five", () =>
+		keywords.Add("Level Five", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(5);
+            if (currLevel == 0)
+            {
+                currLevel = 5;
+                levelOn = true;
+                Application.LoadLevel(6);
+            }
         });
 		keywords.Add("Menu", () =>
+        {   
+            if (currLevel != 0)
+            { 
+                if (tts != null)
+                {
+                    string msg = "Please enter a rating for the amount of fear you've experienced on this level by speaking rate followed by a number from one through five. For example, rate five.";
+                    tts.SpeakText(msg);
+                }
+            }
+        });
+        keywords.Add("Rate One", () =>
         {
-			//loadingImage.SetActive(true);
-			Application.LoadLevel(0);
+            if (currLevel != 0)
+            {
+                levelOn = false;
+                //API to store rating 1 for currLevel
+                currLevel = 0;
+                Application.LoadLevel(1);
+            }
+        });
+        keywords.Add("Rate Two", () =>
+        {
+            if (currLevel != 0)
+            {
+                levelOn = false;
+                //API to store rating 2 for currLevel
+                currLevel = 0;
+                Application.LoadLevel(1);
+            }
+        });
+        keywords.Add("Rate Three", () =>
+        {
+            if (currLevel != 0)
+            {
+                levelOn = false;
+                //API to store rating 3 for currLevel
+                currLevel = 0;
+                Application.LoadLevel(1);
+            }
+        });
+        keywords.Add("Rate Four", () =>
+        {
+            if (currLevel != 0)
+            {
+                levelOn = false;
+                //API to store rating 4 for currLevel
+                currLevel = 0;
+                Application.LoadLevel(1);
+            }
+        });
+        keywords.Add("Rate Five", () =>
+        {
+            if (currLevel != 0)
+            {
+                levelOn = false;
+                //API to store rating 5 for currLevel
+                currLevel = 0;
+                Application.LoadLevel(1);
+            }
         });
         keywords.Add("Up", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().OpacityUp();
-            }
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().OpacityUp();
+                }
+            }   
         });
         keywords.Add("Down", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().OpacityDown();
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().OpacityDown();
+                }
             }
         });
         keywords.Add("Appear", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().Appear();
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().Appear();
+                }
             }
         });
         keywords.Add("Disappear", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().Disappear();
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().Disappear();
+                }
             }
         });
         keywords.Add("Stop", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().Stop();
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().Stop();
+                }
             }
         });
         keywords.Add("Move", () =>
         {
-            object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj)
+            if (currLevel == 4)
             {
-                GameObject go = (GameObject)o;
-                if (go.name == "spider")
-                    go.GetComponent<OpaqueSpiderWalker>().Move();
+                object[] obj = GameObject.FindObjectsOfType(typeof(GameObject));
+                foreach (object o in obj)
+                {
+                    GameObject go = (GameObject)o;
+                    if (go.name == "spider")
+                        go.GetComponent<OpaqueSpiderWalker>().Move();
+                }
             }
         });
 
