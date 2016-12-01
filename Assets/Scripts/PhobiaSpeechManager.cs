@@ -72,6 +72,24 @@ public class PhobiaSpeechManager : MonoBehaviour
 		}, this.token));
 	}
 
+	IEnumerator SendRatingForToken(System.Action<string> callBack, string token, int rating, int level) {
+		Debug.Log("http://ec2-54-183-221-129.us-west-1.compute.amazonaws.com/phobiacurer/addDataForUser.php?token=" + token + "&rating=" + rating + "&level=" + level);
+		WWW w = new WWW("http://ec2-54-183-221-129.us-west-1.compute.amazonaws.com/phobiacurer/addDataForUser.php?token=" + token + "&rating=" + rating + "&level=" + level);
+		yield return w;
+		callBack(w.text);
+	}
+	
+	public void SendRatingForToken(int rating, int level) {
+		//GameObject.Find("Start").GetComponent<Text>().text = "Validating token...";
+		StartCoroutine(SendRatingForToken(callBack => {
+        // callBack is going to be null until it’s set
+			if(callBack != null) {
+            // Now callBack acts as an int
+				//GameObject.Find("Start").GetComponent<Text>().text = "Invalid. Please make sure you have logged in.";
+			}
+		}, this.token, rating, level));
+	}
+	
 	KeywordRecognizer keywordRecognizer = null;
 	public GameObject loadingImage;
     Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
@@ -153,7 +171,7 @@ public class PhobiaSpeechManager : MonoBehaviour
             if (currLevel != 0)
             {
                 levelOn = false;
-                //API to store rating 1 for currLevel
+                SendRatingForToken(1, currLevel);
                 currLevel = 0;
                 Application.LoadLevel(1);
             }
@@ -163,7 +181,7 @@ public class PhobiaSpeechManager : MonoBehaviour
             if (currLevel != 0)
             {
                 levelOn = false;
-                //API to store rating 2 for currLevel
+                SendRatingForToken(2, currLevel);
                 currLevel = 0;
                 Application.LoadLevel(1);
             }
@@ -173,7 +191,7 @@ public class PhobiaSpeechManager : MonoBehaviour
             if (currLevel != 0)
             {
                 levelOn = false;
-                //API to store rating 3 for currLevel
+                SendRatingForToken(3, currLevel);
                 currLevel = 0;
                 Application.LoadLevel(1);
             }
@@ -183,7 +201,7 @@ public class PhobiaSpeechManager : MonoBehaviour
             if (currLevel != 0)
             {
                 levelOn = false;
-                //API to store rating 4 for currLevel
+                SendRatingForToken(4, currLevel);
                 currLevel = 0;
                 Application.LoadLevel(1);
             }
@@ -193,7 +211,7 @@ public class PhobiaSpeechManager : MonoBehaviour
             if (currLevel != 0)
             {
                 levelOn = false;
-                //API to store rating 5 for currLevel
+                SendRatingForToken(5, currLevel);
                 currLevel = 0;
                 Application.LoadLevel(1);
             }
