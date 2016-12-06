@@ -10,4 +10,6 @@ Right now, we only have a solution for Arachnophobia. But keep checking us for f
 
 [Demo Video] (https://www.youtube.com/watch?v=r_DZVQaWpKE)
 
+[Project Report] (https://github.com/hiarora/curer/blob/master/FinalReport.pdf)
+
 
